@@ -68,6 +68,7 @@ impl Block {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_face_texture(&self, face: usize) -> Option<&str> {
         if face < 6 {
             self.face_textures[face].as_deref()
@@ -76,6 +77,7 @@ impl Block {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_face_uv(&self, face: usize) -> &UVMapping {
         if face < 6 {
             &self.face_uvs[face]
@@ -143,14 +145,17 @@ impl Model {
         self.blocks.len()
     }
 
+    #[allow(dead_code)]
     pub fn has_block_at(&self, x: i32, y: i32, z: i32) -> bool {
         self.blocks.contains_key(&(x, y, z))
     }
 
+    #[allow(dead_code)]
     pub fn get_block(&self, x: i32, y: i32, z: i32) -> Option<&Block> {
         self.blocks.get(&(x, y, z))
     }
 
+    #[allow(dead_code)]
     pub fn get_block_mut(&mut self, x: i32, y: i32, z: i32) -> Option<&mut Block> {
         self.blocks.get_mut(&(x, y, z))
     }
@@ -189,7 +194,7 @@ impl Model {
     pub fn get_all_indices(&self) -> Vec<i32> {
         let mut indices = Vec::new();
         let mut offset: i32 = 0;
-        for block in self.blocks.values() {
+        for _block in self.blocks.values() {
             let cube_indices = generate_cube_indices(offset);
             indices.extend_from_slice(&cube_indices);
             offset += 24;
