@@ -3,9 +3,7 @@ use crate::mesh;
 use crate::model::Model;
 
 use byteorder::{LittleEndian, WriteBytesExt};
-use std::collections::HashMap;
 use std::fs;
-use std::io::Write;
 use std::path::Path;
 
 const GLB_MAGIC: u32 = 0x46546C67;
