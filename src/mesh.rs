@@ -1,4 +1,4 @@
-use crate::model::{Block, Model, UVMapping};
+use crate::model::{Block, Model};
 
 #[derive(Debug, Clone)]
 pub struct MeshData {
