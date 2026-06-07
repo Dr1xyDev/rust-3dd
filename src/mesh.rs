@@ -112,18 +112,18 @@ pub fn build_scene_mesh(model: &Model) -> MeshData {
     for block in &blocks {
         let mut mesh = MeshData::new();
 
-        let x = block.x;
-        let y = block.y;
-        let z = block.z;
+        let x = block.x as f32;
+        let y = block.y as f32;
+        let z = block.z as f32;
         let s = 1.0f32;
 
         let face_verts: [[f32; 12]; 6] = [
-            [x as f32, y as f32, (z + s) as f32, (x + s) as f32, y as f32, (z + s) as f32, (x + s) as f32, (y + s) as f32, (z + s) as f32, x as f32, (y + s) as f32, (z + s) as f32],
-            [(x + s) as f32, y as f32, z as f32, x as f32, y as f32, z as f32, x as f32, (y + s) as f32, z as f32, (x + s) as f32, (y + s) as f32, z as f32],
-            [x as f32, (y + s) as f32, (z + s) as f32, (x + s) as f32, (y + s) as f32, (z + s) as f32, (x + s) as f32, (y + s) as f32, z as f32, x as f32, (y + s) as f32, z as f32],
-            [x as f32, y as f32, z as f32, (x + s) as f32, y as f32, z as f32, (x + s) as f32, y as f32, (z + s) as f32, x as f32, y as f32, (z + s) as f32],
-            [(x + s) as f32, y as f32, (z + s) as f32, (x + s) as f32, y as f32, z as f32, (x + s) as f32, (y + s) as f32, z as f32, (x + s) as f32, (y + s) as f32, (z + s) as f32],
-            [x as f32, y as f32, z as f32, x as f32, y as f32, (z + s) as f32, x as f32, (y + s) as f32, (z + s) as f32, x as f32, (y + s) as f32, z as f32],
+            [x, y, z + s, x + s, y, z + s, x + s, y + s, z + s, x, y + s, z + s],
+            [x + s, y, z, x, y, z, x, y + s, z, x + s, y + s, z],
+            [x, y + s, z + s, x + s, y + s, z + s, x + s, y + s, z, x, y + s, z],
+            [x, y, z, x + s, y, z, x + s, y, z + s, x, y, z + s],
+            [x + s, y, z + s, x + s, y, z, x + s, y + s, z, x + s, y + s, z + s],
+            [x, y, z, x, y, z + s, x, y + s, z + s, x, y + s, z],
         ];
 
         let face_normals: [[f32; 12]; 6] = [
@@ -146,7 +146,7 @@ pub fn build_scene_mesh(model: &Model) -> MeshData {
 
         for face_idx in 0..6 {
             let (dx, dy, dz) = adjacent_offsets[face_idx];
-            let neighbor_pos = (x + dx, y + dy, z + dz);
+            let neighbor_pos = (x as i32 + dx, y as i32 + dy, z as i32 + dz);
 
             if block_positions.contains(&neighbor_pos) {
                 continue;
