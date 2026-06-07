@@ -3,9 +3,8 @@ use crate::model::{Block, Model};
 use crate::serializer;
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
-use std::collections::HashMap;
 use std::fs;
-use std::io::{Cursor, Read, Write};
+use std::io::Cursor;
 use std::path::Path;
 
 const M3X_MAGIC: u32 = 0x4D335820;
@@ -186,7 +185,7 @@ pub fn import_m3x(path: &str, model: &mut Model) -> bool {
         let section_type = cursor.read_u32::<LittleEndian>().unwrap_or(0);
         let offset = cursor.read_u64::<LittleEndian>().unwrap_or(0);
         let compressed_size = cursor.read_u32::<LittleEndian>().unwrap_or(0);
-        let uncompressed_size = cursor.read_u32::<LittleEndian>().unwrap_or(0);
+        let _uncompressed_size = cursor.read_u32::<LittleEndian>().unwrap_or(0);
 
         if section_type == SECTION_BLOCKS && offset as usize + 12 <= data.len() {
             let section_start = offset as usize;
@@ -235,6 +234,7 @@ pub fn import_m3x(path: &str, model: &mut Model) -> bool {
     true
 }
 
+#[allow(dead_code)]
 pub fn validate_m3x(path: &str) -> bool {
     let data = match fs::read(path) {
         Ok(d) => d,
