@@ -1,6 +1,7 @@
 use crate::model::Model;
 
 #[derive(Debug, Clone, Copy)]
+#[allow(dead_code)]
 pub enum ExportFormat {
     GLB,
     GLTF,
@@ -9,6 +10,7 @@ pub enum ExportFormat {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct ExportOptions {
     pub include_textures: bool,
     pub include_materials: bool,
@@ -25,6 +27,7 @@ impl Default for ExportOptions {
     }
 }
 
+#[allow(dead_code)]
 pub fn export_model(model: &Model, format: ExportFormat, path: &str, options: &ExportOptions) -> bool {
     match format {
         ExportFormat::GLB => {
@@ -42,6 +45,7 @@ pub fn export_model(model: &Model, format: ExportFormat, path: &str, options: &E
     }
 }
 
+#[allow(dead_code)]
 pub fn get_format_from_extension(path: &str) -> Option<ExportFormat> {
     if path.ends_with(".glb") {
         Some(ExportFormat::GLB)
@@ -56,6 +60,7 @@ pub fn get_format_from_extension(path: &str) -> Option<ExportFormat> {
     }
 }
 
+#[allow(dead_code)]
 pub fn get_extension(format: ExportFormat) -> &'static str {
     match format {
         ExportFormat::GLB => ".glb",
@@ -65,6 +70,7 @@ pub fn get_extension(format: ExportFormat) -> &'static str {
     }
 }
 
+#[allow(dead_code)]
 pub fn get_format_name(format: ExportFormat) -> &'static str {
     match format {
         ExportFormat::GLB => "GLB (GL Binary)",
