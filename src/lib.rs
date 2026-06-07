@@ -6,15 +6,14 @@ mod gltf_exporter;
 mod obj_exporter;
 mod m3x_exporter;
 
-use std::collections::HashMap;
 use std::sync::Mutex;
 use std::ptr;
 
 use jni::JNIEnv;
-use jni::objects::{JClass, JString, JObjectArray};
-use jni::sys::{jint, jlong, jboolean, jfloat, jfloatArray, jintArray, jstring, jbyteArray, JNI_FALSE, JNI_TRUE};
+use jni::objects::{JClass, JString};
+use jni::sys::{jint, jlong, jboolean, jfloat, jfloatArray, jintArray, jstring, JNI_FALSE, JNI_TRUE};
 
-use model::{Engine, Model};
+use model::Engine;
 
 lazy_static::lazy_static! {
     static ref ENGINE: Mutex<Option<Engine>> = Mutex::new(None);
@@ -225,7 +224,7 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeBuildMesh(
 
 #[no_mangle]
 pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetVertices(
-    mut env: JNIEnv,
+    env: JNIEnv,
     _class: JClass,
     model_id: jlong,
 ) -> jfloatArray {
@@ -236,11 +235,12 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetVertices(
     if let Some(ref engine) = *engine_guard {
         if let Some(model) = engine.get_model(model_id as u64) {
             let vertices = model.get_all_vertices();
-            let arr = env.new_float_array(vertices.len() as i32).unwrap_or(ptr::null_mut());
-            if !arr.is_null() {
-                env.set_float_array_region(arr, 0, &vertices).ok();
-            }
-            return arr;
+            let arr = match env.new_float_array(vertices.len() as i32) {
+                Ok(a) => a,
+                Err(_) => return ptr::null_mut(),
+            };
+            let _ = env.set_float_array_region(&arr, 0, &vertices);
+            return arr.into_raw();
         }
     }
     ptr::null_mut()
@@ -248,7 +248,7 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetVertices(
 
 #[no_mangle]
 pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetNormals(
-    mut env: JNIEnv,
+    env: JNIEnv,
     _class: JClass,
     model_id: jlong,
 ) -> jfloatArray {
@@ -259,11 +259,12 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetNormals(
     if let Some(ref engine) = *engine_guard {
         if let Some(model) = engine.get_model(model_id as u64) {
             let normals = model.get_all_normals();
-            let arr = env.new_float_array(normals.len() as i32).unwrap_or(ptr::null_mut());
-            if !arr.is_null() {
-                env.set_float_array_region(arr, 0, &normals).ok();
-            }
-            return arr;
+            let arr = match env.new_float_array(normals.len() as i32) {
+                Ok(a) => a,
+                Err(_) => return ptr::null_mut(),
+            };
+            let _ = env.set_float_array_region(&arr, 0, &normals);
+            return arr.into_raw();
         }
     }
     ptr::null_mut()
@@ -271,7 +272,7 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetNormals(
 
 #[no_mangle]
 pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetUVs(
-    mut env: JNIEnv,
+    env: JNIEnv,
     _class: JClass,
     model_id: jlong,
 ) -> jfloatArray {
@@ -282,11 +283,12 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetUVs(
     if let Some(ref engine) = *engine_guard {
         if let Some(model) = engine.get_model(model_id as u64) {
             let uvs = model.get_all_uvs();
-            let arr = env.new_float_array(uvs.len() as i32).unwrap_or(ptr::null_mut());
-            if !arr.is_null() {
-                env.set_float_array_region(arr, 0, &uvs).ok();
-            }
-            return arr;
+            let arr = match env.new_float_array(uvs.len() as i32) {
+                Ok(a) => a,
+                Err(_) => return ptr::null_mut(),
+            };
+            let _ = env.set_float_array_region(&arr, 0, &uvs);
+            return arr.into_raw();
         }
     }
     ptr::null_mut()
@@ -294,7 +296,7 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetUVs(
 
 #[no_mangle]
 pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetIndices(
-    mut env: JNIEnv,
+    env: JNIEnv,
     _class: JClass,
     model_id: jlong,
 ) -> jintArray {
@@ -305,11 +307,12 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeGetIndices(
     if let Some(ref engine) = *engine_guard {
         if let Some(model) = engine.get_model(model_id as u64) {
             let indices = model.get_all_indices();
-            let arr = env.new_int_array(indices.len() as i32).unwrap_or(ptr::null_mut());
-            if !arr.is_null() {
-                env.set_int_array_region(arr, 0, &indices).ok();
-            }
-            return arr;
+            let arr = match env.new_int_array(indices.len() as i32) {
+                Ok(a) => a,
+                Err(_) => return ptr::null_mut(),
+            };
+            let _ = env.set_int_array_region(&arr, 0, &indices);
+            return arr.into_raw();
         }
     }
     ptr::null_mut()
@@ -499,7 +502,7 @@ pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeImportM3X(
 
 #[no_mangle]
 pub extern "system" fn Java_com_dbuild_net_RustBridge_nativeSerializeModel(
-    mut env: JNIEnv,
+    env: JNIEnv,
     _class: JClass,
     model_id: jlong,
 ) -> jstring {
