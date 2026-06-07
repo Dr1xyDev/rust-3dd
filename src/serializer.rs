@@ -23,6 +23,7 @@ pub fn deserialize_model(json: &str, model: &mut Model) -> bool {
     }
 }
 
+#[allow(dead_code)]
 pub fn serialize_to_file(model: &Model, path: &str) -> bool {
     let json = serialize_model(model);
     match fs::write(path, json.as_bytes()) {
@@ -31,6 +32,7 @@ pub fn serialize_to_file(model: &Model, path: &str) -> bool {
     }
 }
 
+#[allow(dead_code)]
 pub fn deserialize_from_file(path: &str, model: &mut Model) -> bool {
     match fs::read_to_string(path) {
         Ok(json) => deserialize_model(&json, model),
