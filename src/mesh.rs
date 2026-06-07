@@ -93,7 +93,7 @@ pub fn merge_meshes(meshes: Vec<MeshData>) -> MeshData {
         merged.uvs.extend_from_slice(&mesh.uvs);
 
         for idx in &mesh.indices {
-            merged.indices.push(idx + vertex_offset);
+            merged.indices.push(*idx + vertex_offset);
         }
 
         vertex_offset += mesh.vertex_count() as i32;
