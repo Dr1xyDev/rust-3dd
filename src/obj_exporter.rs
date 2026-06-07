@@ -4,7 +4,6 @@ use crate::model::Model;
 
 use std::collections::HashSet;
 use std::fs;
-use std::io::Write;
 use std::path::Path;
 
 pub fn export_obj(model: &Model, path: &str, options: &ExportOptions) -> bool {
